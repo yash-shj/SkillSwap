@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section-heading">
+    <p class="eyebrow">Function 01 / User & skills profile</p>
+    <h1>Your exchange profile</h1>
+    <p>Tell the community what you can teach and what you want to learn.</p>
+</section>
+<form class="panel profile-form" method="post">
+    <div class="identity"><span class="avatar">{{ g.user['name'][0]|upper }}</span><div><strong>{{ g.user['name'] }}</strong><small>{{ g.user['email'] }}</small></div></div>
+    <label>Skills you offer <span>comma-separated</span><input name="offered_skills" value="{{ skills_from_json(g.user['offered_skills'])|join(', ') }}" placeholder="e.g. Python, photography, guitar"></label>
+    <label>Skills you want <span>comma-separated</span><input name="wanted_skills" value="{{ skills_from_json(g.user['wanted_skills'])|join(', ') }}" placeholder="e.g. Spanish, cooking, design"></label>
+    <button type="submit">Save profile</button>
+</form>
+<div class="next-row"><span>Ready to find an exchange?</span><a class="text-link" href="{{ url_for('matches') }}">View mutual matches <span aria-hidden="true">-></span></a></div>
+{% endblock %}

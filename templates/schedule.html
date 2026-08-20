@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section-heading"><p class="eyebrow">Function 03 / Session scheduling</p><h1>Make the exchange real</h1><p>Propose a time to a match, then confirm incoming proposals.</p></section>
+<div class="schedule-grid">
+    <form class="panel" method="post"><h2>Propose a session</h2><label>Match<select name="recipient_id" required><option value="">Choose a person</option>{% for user in other_users %}<option value="{{ user['id'] }}">{{ user['name'] }}</option>{% endfor %}</select></label><label>Suggested time<input type="datetime-local" name="proposed_time" required></label><button type="submit">Send proposal</button></form>
+    <section><h2 class="subheading">Your proposals</h2>{% if proposals %}<div class="proposal-list">{% for proposal in proposals %}<article class="panel proposal"><div><strong>{{ proposal['proposer_name'] }} &rarr; {{ proposal['recipient_name'] }}</strong><small>{{ proposal['proposed_time'] }}</small></div><span class="status {{ proposal['status'] }}">{{ proposal['status'] }}</span>{% if proposal['recipient_id'] == g.user['id'] and proposal['status'] == 'proposed' %}<form method="post" action="{{ url_for('accept_session', session_id=proposal['id']) }}"><button class="button small" type="submit">Accept</button></form>{% endif %}</article>{% endfor %}</div>{% else %}<div class="panel empty compact"><p>No sessions proposed yet.</p></div>{% endif %}</section>
+</div>
+{% endblock %}

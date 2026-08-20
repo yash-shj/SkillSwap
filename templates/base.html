@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title or "SkillSwap" }} | SkillSwap</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" href="{{ url_for('index') }}">Skill<span>Swap</span></a>
+        {% if g.user %}
+        <nav>
+            <a href="{{ url_for('profile') }}">Profile</a>
+            <a href="{{ url_for('matches') }}">Matches</a>
+            <a href="{{ url_for('scheduling') }}">Schedule</a>
+            <a class="logout" href="{{ url_for('logout') }}">Log out</a>
+        </nav>
+        {% endif %}
+    </header>
+    <main class="page-shell">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

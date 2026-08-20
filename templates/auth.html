@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="auth-layout">
+    <div class="intro">
+        <p class="eyebrow">Trade time, not money</p>
+        <h1>Find someone who knows what you want to learn.</h1>
+        <p>Offer a skill. Learn a skill. Build a fair exchange with people nearby.</p>
+    </div>
+    <form class="panel auth-form" method="post">
+        <h2>{{ heading }}</h2>
+        {% if signup %}
+        <label>Name<input name="name" required autocomplete="name"></label>
+        {% endif %}
+        <label>Email<input name="email" type="email" required autocomplete="email"></label>
+        <label>Password<input name="password" type="password" required minlength="6" autocomplete="{{ 'new-password' if signup else 'current-password' }}"></label>
+        <button type="submit">{{ action }}</button>
+        <p class="form-note">{{ alternate_text }} <a href="{{ alternate_url }}">{{ alternate_action }}</a></p>
+    </form>
+</section>
+{% endblock %}

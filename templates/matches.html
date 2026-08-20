@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section-heading split-heading">
+    <div><p class="eyebrow">Function 02 / Matchmaking</p><h1>Mutual matches</h1><p>Both sides get something useful. Matches are ranked by the number of skills exchanged.</p></div>
+    <div class="score-key"><strong>{{ matches|length }}</strong><span>potential exchanges</span></div>
+</section>
+{% if matches %}
+<div class="match-list">
+{% for match in matches %}
+    <article class="panel match-card">
+        <div class="match-top"><div class="identity"><span class="avatar warm">{{ match.user['name'][0]|upper }}</span><div><h2>{{ match.user['name'] }}</h2><small>Exchange score: {{ match.score }}</small></div></div><a class="button small" href="{{ url_for('scheduling') }}">Schedule</a></div>
+        <div class="exchange"><div><span class="label">You learn</span><div class="tags">{% for skill in match.you_can_learn %}<span>{{ skill }}</span>{% endfor %}</div></div><div class="exchange-arrow">&harr;</div><div><span class="label">You teach</span><div class="tags">{% for skill in match.they_can_learn %}<span>{{ skill }}</span>{% endfor %}</div></div></div>
+    </article>
+{% endfor %}
+</div>
+{% else %}
+<div class="panel empty"><h2>No mutual matches yet</h2><p>Update both skill lists in your profile. A match appears when your offered skills meet another person's wants, and theirs meet yours.</p><a class="button" href="{{ url_for('profile') }}">Update my skills</a></div>
+{% endif %}
+{% endblock %}
