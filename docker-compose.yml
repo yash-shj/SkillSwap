@@ -1,0 +1,46 @@
+services:
+  gateway:
+    build: ./gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - user-service
+      - matchmaking-service
+      - scheduling-service
+
+  user-service:
+    build: ./microservices/user-service
+    environment:
+      SECRET_KEY: microservices-development-secret
+      DATABASE_PATH: /data/users.db
+    ports:
+      - "5001:5001"
+    volumes:
+      - user_service_data:/data
+
+  matchmaking-service:
+    build: ./microservices/matchmaking-service
+    environment:
+      SECRET_KEY: microservices-development-secret
+      USER_SERVICE_URL: http://user-service:5001
+    ports:
+      - "5002:5002"
+    depends_on:
+      - user-service
+
+  scheduling-service:
+    build: ./microservices/scheduling-service
+    environment:
+      SECRET_KEY: microservices-development-secret
+      USER_SERVICE_URL: http://user-service:5001
+      DATABASE_PATH: /data/sessions.db
+    ports:
+      - "5003:5003"
+    volumes:
+      - scheduling_service_data:/data
+    depends_on:
+      - user-service
+
+volumes:
+  user_service_data:
+  scheduling_service_data:
