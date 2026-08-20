@@ -212,3 +212,67 @@ three isolated services:
 The current implementation keeps these responsibilities in `app.py`, while
 the route boundaries and the pure set-intersection matching rule provide clear
 boundaries for a later decomposition.
+
+## Three-tier implementation
+
+The `three-tier` branch contains a working three-tier version of the same
+SkillSwap workflow. It separates the application into independently deployable
+presentation, application, and database tiers:
+
+```text
+[ Browser ]
+	 |
+	 v
+[ Nginx frontend :3000 ] -- /api --> [ Flask backend :4000 ] -- SQL --> [ MySQL :3307 ]
+```
+
+The implementation is organized as follows:
+
+```text
+three-tier/
+├── frontend/
+│   ├── index.html       # Browser UI
+│   ├── app.js           # Fetch-based API client and view rendering
+│   ├── style.css        # Frontend styling
+│   ├── Dockerfile
+│   └── nginx.conf       # Static files and /api reverse proxy
+├── backend/
+│   ├── app.py           # REST API and business logic
+│   ├── requirements.txt
+│   └── Dockerfile
+└── database/
+	└── init.sql         # MySQL schema
+```
+
+The browser never connects directly to MySQL. It calls the Flask REST API
+through Nginx, and only the backend connects to the database. The API exposes
+authentication, profile, matchmaking, and scheduling endpoints under `/api`.
+The session cookie is shared through the same Nginx origin, so no separate
+frontend authentication server is needed for this demonstration.
+
+### Run the three-tier version
+
+Make sure Docker Desktop is running, then from the project root run:
+
+```powershell
+git switch three-tier
+docker compose up --build
+```
+
+Open [http://localhost:3000](http://localhost:3000). The backend is also
+available at [http://localhost:4000](http://localhost:4000), and MySQL is
+published on port `3307` for local inspection. Stop the stack with:
+
+```powershell
+docker compose down
+```
+
+The named `three_tier_mysql_data` volume preserves database data between normal
+stops. To remove the containers and reset all three-tier data:
+
+```powershell
+docker compose down --volumes
+```
+
+This branch uses Docker for the three-tier runtime; the original monolith in
+the `monolith` branch continues to run with the Python `.venv` and SQLite.

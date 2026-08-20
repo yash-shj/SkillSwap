@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SkillSwap | Three-tier</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" href="#profile">Skill<span>Swap</span></a>
+        <nav id="app-nav" hidden>
+            <button data-view="profile">Profile</button>
+            <button data-view="matches">Matches</button>
+            <button data-view="schedule">Schedule</button>
+            <button id="logout" class="logout">Log out</button>
+        </nav>
+    </header>
+    <main class="page-shell">
+        <div id="notice" role="status"></div>
+        <section id="auth-view" class="auth-layout">
+            <div class="intro"><p class="eyebrow">Three-tier SkillSwap</p><h1>Trade knowledge, not money.</h1><p>Build a profile, find a mutual exchange, and make time to learn together.</p></div>
+            <div class="panel auth-card">
+                <div class="tabs"><button class="active" data-auth="login">Log in</button><button data-auth="signup">Sign up</button></div>
+                <form id="auth-form" class="stack">
+                    <label id="name-field" hidden>Name<input name="name" autocomplete="name"></label>
+                    <label>Email<input name="email" type="email" required autocomplete="email"></label>
+                    <label>Password<input name="password" type="password" minlength="6" required autocomplete="current-password"></label>
+                    <button type="submit" id="auth-submit">Log in</button>
+                </form>
+            </div>
+        </section>
+        <section id="app-view" hidden>
+            <div id="profile-view" class="view"></div>
+            <div id="matches-view" class="view" hidden></div>
+            <div id="schedule-view" class="view" hidden></div>
+        </section>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>
